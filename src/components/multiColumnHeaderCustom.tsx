@@ -9,6 +9,7 @@ import {
   FlexGridCellTemplate,
 } from '@grapecity/wijmo.react.grid';
 import * as DataService from './data';
+import * as wjInput from '@grapecity/wijmo.react.input';
 
 //https://demo.grapecity.com/wijmo/demos/Grid/Columns/ColumnGroupsObjectModel/react
 
@@ -16,6 +17,13 @@ const MultiColumnHeaderCustom = () => {
   const [data] = useState(DataService.getData());
   const [allocGr, setAllocGr] = useState(false);
   const [short, setShort] = useState(true);
+  const [comboData] = useState([
+    'アメリカ',
+    '日本',
+    '中国',
+    'ドイツ',
+    'イギリス',
+  ]);
 
   const headerallocGrTemplate = (cell: any) => {
     return (
@@ -26,6 +34,14 @@ const MultiColumnHeaderCustom = () => {
           onChange={collapsedallocGrClicked}
         />
         {cell.col.header}
+      </>
+    );
+  };
+
+  const headerallocGrTemplate2 = () => {
+    return (
+      <>
+        <wjInput.ComboBox itemsSource={comboData}></wjInput.ComboBox>
       </>
     );
   };
@@ -94,23 +110,15 @@ const MultiColumnHeaderCustom = () => {
             />
             <FlexGridColumnGroup
               binding="alloc.stock"
-              header="株式"
+              header=" "
               format="p0"
               width={80}
             >
               <FlexGridCellTemplate
                 cellType="ColumnHeader"
                 autoSizeRows={false}
-                template={headerallocGrTemplate}
+                template={headerallocGrTemplate2}
               />
-            </FlexGridColumnGroup>
-            <FlexGridColumnGroup
-              binding="alloc.bond"
-              header="債券"
-              format="p0"
-              width={80}
-            >
-              <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
             </FlexGridColumnGroup>
             <FlexGridColumnGroup header="詳細" align="center">
               <FlexGridColumnGroup
@@ -121,22 +129,7 @@ const MultiColumnHeaderCustom = () => {
               >
                 <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
               </FlexGridColumnGroup>
-              <FlexGridColumnGroup
-                binding="alloc.other"
-                header="その他"
-                format="p0"
-                width={80}
-              >
-                <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
-              </FlexGridColumnGroup>
             </FlexGridColumnGroup>
-            <FlexGridColumnGroup
-              binding="alloc.amount"
-              header="金額"
-              format="c0"
-              width={100}
-              cssClass="main-column"
-            />
           </FlexGridColumnGroup>
           <FlexGridColumnGroup header="実績" align="center">
             <FlexGridColumnGroup
