@@ -12,13 +12,10 @@ import * as DataService from './data';
 
 //https://demo.grapecity.com/wijmo/demos/Grid/Columns/ColumnGroupsObjectModel/react
 
-const MultiColumnHeader = () => {
+const MultiColumnHeaderCustom = () => {
   const [data] = useState(DataService.getData());
-  const [animated, setAnimated] = useState(true);
-  const [useCellTemplates, setUseCellTemplates] = useState(true);
   const [allocGr, setAllocGr] = useState(false);
   const [short, setShort] = useState(true);
-  const [long, setLong] = useState(true);
 
   const headerallocGrTemplate = (cell: any) => {
     return (
@@ -46,20 +43,8 @@ const MultiColumnHeader = () => {
     );
   };
 
-  const headerLongTemplate = (cell: any) => {
-    return (
-      <React.Fragment>
-        <input type="checkbox" checked={long} onChange={collapsedLongClicked} />
-        {cell.col.header}
-      </React.Fragment>
-    );
-  };
-
-  const animationClicked = () => setAnimated(!animated);
-  const templateClicked = () => setUseCellTemplates(!useCellTemplates);
   const collapsedallocGrClicked = () => setAllocGr(!allocGr);
   const collapsedShortClicked = () => setShort(!short);
-  const collapsedLongClicked = () => setLong(!long);
 
   const cellTemplate = (cell: any) => {
     const grid = cell.row.grid;
@@ -80,19 +65,7 @@ const MultiColumnHeader = () => {
 
   return (
     <div className="container-fluid">
-      <label>
-        折りたたみ/展開時のアニメーションを有効にする
-        <input type="checkbox" checked={animated} onChange={animationClicked} />
-      </label>
-      <label>
-        セルテンプレートを利用する
-        <input
-          type="checkbox"
-          checked={useCellTemplates}
-          onChange={templateClicked}
-        />
-      </label>
-      <div className={animated ? 'animated' : ''}>
+      <div>
         <FlexGrid
           headersVisibility="Column"
           showSelectedHeaders="All"
@@ -117,7 +90,7 @@ const MultiColumnHeader = () => {
             <FlexGridCellTemplate
               cellType="ColumnHeader"
               autoSizeRows={false}
-              template={useCellTemplates ? headerallocGrTemplate : null}
+              template={headerallocGrTemplate}
             />
             <FlexGridColumnGroup
               binding="alloc.stock"
@@ -126,8 +99,9 @@ const MultiColumnHeader = () => {
               width={80}
             >
               <FlexGridCellTemplate
-                cellType="Cell"
-                template={useCellTemplates ? cellTemplate : null}
+                cellType="ColumnHeader"
+                autoSizeRows={false}
+                template={headerallocGrTemplate}
               />
             </FlexGridColumnGroup>
             <FlexGridColumnGroup
@@ -136,10 +110,7 @@ const MultiColumnHeader = () => {
               format="p0"
               width={80}
             >
-              <FlexGridCellTemplate
-                cellType="Cell"
-                template={useCellTemplates ? cellTemplate : null}
-              />
+              <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
             </FlexGridColumnGroup>
             <FlexGridColumnGroup header="詳細" align="center">
               <FlexGridColumnGroup
@@ -148,10 +119,7 @@ const MultiColumnHeader = () => {
                 format="p0"
                 width={100}
               >
-                <FlexGridCellTemplate
-                  cellType="Cell"
-                  template={useCellTemplates ? cellTemplate : null}
-                />
+                <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
               </FlexGridColumnGroup>
               <FlexGridColumnGroup
                 binding="alloc.other"
@@ -159,10 +127,7 @@ const MultiColumnHeader = () => {
                 format="p0"
                 width={80}
               >
-                <FlexGridCellTemplate
-                  cellType="Cell"
-                  template={useCellTemplates ? cellTemplate : null}
-                />
+                <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
               </FlexGridColumnGroup>
             </FlexGridColumnGroup>
             <FlexGridColumnGroup
@@ -183,7 +148,7 @@ const MultiColumnHeader = () => {
               <FlexGridCellTemplate
                 cellType="ColumnHeader"
                 autoSizeRows={false}
-                template={useCellTemplates ? headerShortTemplate : null}
+                template={headerShortTemplate}
               />
               <FlexGridColumnGroup
                 binding="perf.ytd"
@@ -199,35 +164,10 @@ const MultiColumnHeader = () => {
                 width={80}
               />
             </FlexGridColumnGroup>
-            <FlexGridColumnGroup
-              header="長期"
-              align="center"
-              collapseTo="perf.m12"
-              isCollapsed={long}
-            >
-              <FlexGridCellTemplate
-                cellType="ColumnHeader"
-                autoSizeRows={false}
-                template={useCellTemplates ? headerLongTemplate : null}
-              />
-              <FlexGridColumnGroup
-                binding="perf.m6"
-                header="長期"
-                format="p2"
-                width={80}
-              />
-              <FlexGridColumnGroup
-                binding="perf.m12"
-                header="1年"
-                format="p2"
-                width={100}
-                cssClass="main-column"
-              />
-            </FlexGridColumnGroup>
           </FlexGridColumnGroup>
         </FlexGrid>
       </div>
     </div>
   );
 };
-export default MultiColumnHeader;
+export default MultiColumnHeaderCustom;
