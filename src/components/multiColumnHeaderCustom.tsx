@@ -2,7 +2,6 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@grapecity/wijmo.styles/wijmo.css';
 import './multiColumnHeader.css';
-import * as React from 'react';
 import {
   FlexGrid,
   FlexGridColumnGroup,
@@ -16,7 +15,6 @@ import * as wjInput from '@grapecity/wijmo.react.input';
 const MultiColumnHeaderCustom = () => {
   const [data] = useState(DataService.getData());
   const [allocGr, setAllocGr] = useState(false);
-  const [short, setShort] = useState(true);
   const [comboData] = useState([
     'アメリカ',
     '日本',
@@ -46,21 +44,7 @@ const MultiColumnHeaderCustom = () => {
     );
   };
 
-  const headerShortTemplate = (cell: any) => {
-    return (
-      <React.Fragment>
-        <input
-          type="checkbox"
-          checked={short}
-          onChange={collapsedShortClicked}
-        />
-        {cell.col.header}
-      </React.Fragment>
-    );
-  };
-
   const collapsedallocGrClicked = () => setAllocGr(!allocGr);
-  const collapsedShortClicked = () => setShort(!short);
 
   const cellTemplate = (cell: any) => {
     const grid = cell.row.grid;
@@ -92,12 +76,6 @@ const MultiColumnHeaderCustom = () => {
         >
           <FlexGridColumnGroup binding="name" header="Name" width={150} />
           <FlexGridColumnGroup
-            binding="currency"
-            header="通貨"
-            width={80}
-            align="center"
-          />
-          <FlexGridColumnGroup
             header="配当"
             align="center"
             collapseTo="alloc.amount"
@@ -112,7 +90,7 @@ const MultiColumnHeaderCustom = () => {
               binding="alloc.stock"
               header=" "
               format="p0"
-              width={80}
+              width={180}
             >
               <FlexGridCellTemplate
                 cellType="ColumnHeader"
@@ -129,33 +107,6 @@ const MultiColumnHeaderCustom = () => {
               >
                 <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
               </FlexGridColumnGroup>
-            </FlexGridColumnGroup>
-          </FlexGridColumnGroup>
-          <FlexGridColumnGroup header="実績" align="center">
-            <FlexGridColumnGroup
-              header="短期"
-              align="center"
-              collapseTo="perf.ytd"
-              isCollapsed={short}
-            >
-              <FlexGridCellTemplate
-                cellType="ColumnHeader"
-                autoSizeRows={false}
-                template={headerShortTemplate}
-              />
-              <FlexGridColumnGroup
-                binding="perf.ytd"
-                header="年初来"
-                format="p2"
-                width={100}
-                cssClass="main-column"
-              />
-              <FlexGridColumnGroup
-                binding="perf.m1"
-                header="1ヶ月"
-                format="p2"
-                width={80}
-              />
             </FlexGridColumnGroup>
           </FlexGridColumnGroup>
         </FlexGrid>
