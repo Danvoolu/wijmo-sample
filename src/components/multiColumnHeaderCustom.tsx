@@ -9,19 +9,26 @@ import {
 } from '@grapecity/wijmo.react.grid';
 import * as DataService from './data';
 import * as wjInput from '@grapecity/wijmo.react.input';
+import { CountryInfo } from './../interfaces';
 
 //https://demo.grapecity.com/wijmo/demos/Grid/Columns/ColumnGroupsObjectModel/react
+
+const countryInfos: CountryInfo[] = [
+  {
+    country: 'アメリカ',
+    capital: 'ワシントンD.C.',
+  },
+  {
+    country: '日本',
+    capital: '東京',
+  },
+];
 
 const MultiColumnHeaderCustom = () => {
   const [data] = useState(DataService.getData());
   const [allocGr, setAllocGr] = useState(false);
-  const [comboData] = useState([
-    'アメリカ',
-    '日本',
-    '中国',
-    'ドイツ',
-    'イギリス',
-  ]);
+  const [comboData] = useState(['アメリカ', '日本']);
+  const [selectedComboValue, setsSlectedComboValue] = useState(null);
 
   const headerallocGrTemplate = (cell: any) => {
     return (
@@ -39,29 +46,30 @@ const MultiColumnHeaderCustom = () => {
   const headerallocGrTemplate2 = () => {
     return (
       <>
-        <wjInput.ComboBox itemsSource={comboData}></wjInput.ComboBox>
+        <wjInput.ComboBox
+          itemsSource={comboData}
+          selectedIndexChanged={selectedIndexChanged}
+        ></wjInput.ComboBox>
+      </>
+    );
+  };
+
+  const selectedIndexChanged = (sender: any) => {
+    setsSlectedComboValue(sender.selectedValue);
+  };
+
+  const columnHeaderStringTemplate = () => {
+    const capital = countryInfos.find(
+      (x) => x.country === selectedComboValue
+    )?.capital;
+    return (
+      <>
+        <span>{capital}</span>
       </>
     );
   };
 
   const collapsedallocGrClicked = () => setAllocGr(!allocGr);
-
-  const cellTemplate = (cell: any) => {
-    const grid = cell.row.grid;
-    const rowIdx = cell.row.index;
-    const colIdx = cell.col.index;
-    return (
-      <span
-        className={
-          grid.getCellData(rowIdx, colIdx, false) > 0.2
-            ? 'big-val'
-            : 'small-val'
-        }
-      >
-        {grid.getCellData(rowIdx, colIdx, true)}
-      </span>
-    );
-  };
 
   return (
     <div className="container-fluid">
@@ -86,27 +94,22 @@ const MultiColumnHeaderCustom = () => {
               autoSizeRows={false}
               template={headerallocGrTemplate}
             />
-            <FlexGridColumnGroup
-              binding="alloc.stock"
-              header=" "
-              format="p0"
-              width={180}
-            >
+            <FlexGridColumnGroup binding="alloc.stock" header=" " width={180}>
               <FlexGridCellTemplate
                 cellType="ColumnHeader"
                 autoSizeRows={false}
                 template={headerallocGrTemplate2}
               />
             </FlexGridColumnGroup>
-            <FlexGridColumnGroup header="詳細" align="center">
-              <FlexGridColumnGroup
-                binding="alloc.cash"
-                header="キャッシュ"
-                format="p0"
-                width={100}
-              >
-                <FlexGridCellTemplate cellType="Cell" template={cellTemplate} />
-              </FlexGridColumnGroup>
+            <FlexGridColumnGroup
+              binding="alloc.cash"
+              header="キャッシュ"
+              width={100}
+            >
+              <FlexGridCellTemplate
+                cellType="ColumnHeader"
+                template={columnHeaderStringTemplate}
+              />
             </FlexGridColumnGroup>
           </FlexGridColumnGroup>
         </FlexGrid>
