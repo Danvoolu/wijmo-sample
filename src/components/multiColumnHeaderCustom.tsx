@@ -10,6 +10,7 @@ import {
 import * as DataService from './data';
 import * as wjInput from '@grapecity/wijmo.react.input';
 import { CountryInfo } from './../interfaces';
+import { Selector } from '@grapecity/wijmo.grid.selector';
 
 //https://demo.grapecity.com/wijmo/demos/Grid/Columns/ColumnGroupsObjectModel/react
 
@@ -71,10 +72,18 @@ const MultiColumnHeaderCustom = () => {
 
   const collapsedallocGrClicked = () => setAllocGr(!allocGr);
 
+  const initGrid = (grid: any) => {
+    let selector = new Selector(grid, {
+      itemChecked: (s: any, e: any) => {},
+      showCheckAll: false,
+    });
+  };
+
   return (
     <div className="container-fluid">
       <div>
         <FlexGrid
+          initialized={initGrid}
           headersVisibility="Column"
           showSelectedHeaders="All"
           alternatingRowStep={0}
@@ -82,6 +91,7 @@ const MultiColumnHeaderCustom = () => {
           autoGenerateColumns={false}
           itemsSource={data}
         >
+          <FlexGridColumnGroup header=" " width={30} />
           <FlexGridColumnGroup binding="name" header="Name" width={150} />
           <FlexGridColumnGroup
             header="配当"
