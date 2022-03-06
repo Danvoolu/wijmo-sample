@@ -10,7 +10,8 @@ import {
 import * as DataService from './data';
 import * as wjInput from '@grapecity/wijmo.react.input';
 import { CountryInfo } from './../interfaces';
-import { Selector } from '@grapecity/wijmo.grid.selector';
+import { WijmoCustom } from '../wijmoCustom';
+import { FlexGrid as WijmoFlexGrid } from '@grapecity/wijmo.grid';
 
 //https://demo.grapecity.com/wijmo/demos/Grid/Columns/ColumnGroupsObjectModel/react
 
@@ -30,6 +31,7 @@ const MultiColumnHeaderCustom = () => {
   const [allocGr, setAllocGr] = useState(false);
   const [comboData] = useState(['アメリカ', '日本']);
   const [selectedComboValue, setsSlectedComboValue] = useState(null);
+  const [checkedDeleteRow, setCheckedDeleteRow] = useState([]);
 
   const headerallocGrTemplate = (cell: any) => {
     return (
@@ -72,10 +74,10 @@ const MultiColumnHeaderCustom = () => {
 
   const collapsedallocGrClicked = () => setAllocGr(!allocGr);
 
-  const initGrid = (grid: any) => {
-    let selector = new Selector(grid, {
-      itemChecked: (s: any, e: any) => {},
-      showCheckAll: false,
+  const initGrid = (grid: WijmoFlexGrid) => {
+    WijmoCustom.setDeleteColumn(grid, (s, e) => {
+      console.log('s', s);
+      console.log('e', e);
     });
   };
 
