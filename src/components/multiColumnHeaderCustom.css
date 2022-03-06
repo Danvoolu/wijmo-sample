@@ -1,0 +1,13 @@
+.wj-control
+  .wj-input-group
+  .wj-input-group-btn:last-child:not(:first-child)
+  > .wj-btn {
+  /* aria-label="Toggle Dropdown" */
+  /* Type:button */
+  border-left: 0rem;
+}
+
+.wj-dropdown {
+  background: #eee;
+  border: 0rem;
+}

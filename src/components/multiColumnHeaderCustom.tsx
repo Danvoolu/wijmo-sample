@@ -12,6 +12,7 @@ import * as wjInput from '@grapecity/wijmo.react.input';
 import { CountryInfo } from './../interfaces';
 import { WijmoCustom } from '../wijmoCustom';
 import { FlexGrid as WijmoFlexGrid } from '@grapecity/wijmo.grid';
+import './multiColumnHeaderCustom.css';
 
 //https://demo.grapecity.com/wijmo/demos/Grid/Columns/ColumnGroupsObjectModel/react
 
